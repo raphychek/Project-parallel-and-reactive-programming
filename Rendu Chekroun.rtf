@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww19440\viewh12860\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 ########################################################################\
+RENDU DE PROGRAMMATION PARALL\'c8LE ET R\'c9ACTIVE DE RAPHA\'cbL CHEKROUN\
+########################################################################
+\f1\b0 \
+\
+\ul Travail effectu\'e9 :\
+\ulnone \
+- > J\'92ai fait la partie I du projet : simple_use et multiple_use sont tous deux fonctionnels.\
+\
+Le moteur parall\'e8le fonctionne comme suit :\
+\
+- Le runtime, au sens propre du terme, s\'92appelle Toexec. C\'92est un vecteur de box de RuntimeNode.\
+Le nombre de threads est un argument de la fonction \'ab\'a0execute\'a0\'bb de Toexec.\
+\
+- Les threads se partagent le travail en se volant mutuellement des taches : \'e0 chaque thread est associ\'e9 un worker qui a sa pile de tache a executer et peut voler dans les piles des autres threads.\
+Tous les workers et les listes auxquelles ils ont acc\'e8s sont stock\'e9s dans une structure nomm\'e9e RuntimeLoc. Tous les workers sont num\'e9rot\'e9s, de 1 \'e0 k.\
+\
+Voici une br\'e8ve explication du m\'e9canisme de vol :\
+\
+\'c0 une \'e9tape donn\'e9e, le i-\'e8me worker regarde le premier \'e9l\'e9ment de sa liste de tache a effectu\'e9e. Si cet \'e9l\'e9ment existe, il l\'92execute. \
+S\'92il n\'92existe pas, il vas chercher dans les piles de i+1 \'e0 k, puis de k \'e0 i-1. Ce choix de parcours des piles des autres workers se justifie par le fait qu\'92on ne veux pas que tous les workers volent en priorit\'e9s dans la premi\'e8re pile.\
+S\'92il ne trouve rien \'e0 prendre dans les autre piles, il attend un petit peu (avec la commande yield_now), puis recommence ce processus 10 fois. Si au bout de 10 fois il n\'92a toujours trouv\'e9 aucune tache \'e0 executer, il meurt.\
+\
+\ul Tests et applications :\
+\ulnone \
+-> Une fois le single_use fonctionnel, j\'92ai impl\'e9ment\'e9 une petite application : un demi-additionneur, compatible avec le moteur d\'92execution parall\'e8le. Un tel demi-additionneur \'e0 d\'e9j\'e0 \'e9t\'e9 \'e9tudi\'e9 dans le cadre du TD4, mais je ne l\'92avais fait que pour le moteur d\'92execution non parall\'e8le.\
+\
+-> Tous les tests fournis pour le TD fonctionnent. Le test que j\'92ai moi-m\'eame impl\'e9ment\'e9 fonctionne aussi.}
